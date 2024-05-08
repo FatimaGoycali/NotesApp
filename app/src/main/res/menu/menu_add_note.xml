@@ -5,5 +5,6 @@
     <item
         android:id="@+id/saveMenu"
         android:title="Save"
+        android:iconTint="@color/white"
         app:showAsAction="always" />
 </menu>

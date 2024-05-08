@@ -1,6 +1,7 @@
 package com.example.thenotesapp.fragments
 
 import android.os.Bundle
+import android.transition.TransitionInflater
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -8,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -35,6 +37,8 @@ class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
     ): View? {
 
         addNoteBinding = FragmentAddNoteBinding.inflate(inflater, container, false)
+        (context as MainActivity).hideBackArrow(true)
+
         return binding.root
     }
 
@@ -52,13 +56,13 @@ class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
         val noteTitle = binding.addNoteTitle.text.toString().trim()
         val noteDesc = binding.addNoteDesc.text.toString().trim()
 
-        if (noteTitle.isNotEmpty()) {
+        if (noteTitle.isNotEmpty() || noteDesc.isNotEmpty()) {
             val note = Note(0, noteTitle, noteDesc)
             noteViewModel.addNote(note)
             Toast.makeText(addNoteView.context, "Note Saved.", Toast.LENGTH_SHORT).show()
             view.findNavController().popBackStack(R.id.homeFragment, false)
         } else {
-            Toast.makeText(addNoteView.context, "Please enter title", Toast.LENGTH_SHORT).show()
+            Toast.makeText(addNoteView.context, "Please enter text", Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -74,10 +78,10 @@ class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
                 saveNote(addNoteView)
                 true
             }
-
             else -> false
         }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

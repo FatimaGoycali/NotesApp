@@ -37,8 +37,9 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
+        (context as MainActivity).hideBackArrow(false)
         return binding.root
     }
 
@@ -71,7 +72,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     }
 
     private fun setupHomeRecyclerView() {
-        notesAdapter = NoteAdapter()
+        notesAdapter = NoteAdapter(){
+            val direction = HomeFragmentDirections
+                .actionHomeFragmentToEditNoteFragment(it)
+            view?.findNavController()?.navigate(direction)
+        }
         binding.homeRecyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(2, GridLayoutManager.VERTICAL)
             setHasFixedSize(true)
@@ -86,7 +91,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
     }
 
     private fun searchNote(query: String?) {
-//        ?
         val searchQuery = "%$query"
 
         notesViewModel.searchNote(searchQuery).observe(this) { list ->

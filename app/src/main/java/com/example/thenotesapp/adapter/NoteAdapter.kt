@@ -11,7 +11,7 @@ import com.example.thenotesapp.fragments.HomeFragmentDirections
 import com.example.thenotesapp.model.Note
 
 
-class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+class NoteAdapter(private val listener: (Note) -> Unit) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
     class NoteViewHolder(val itemBinding: NoteLayoutBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
@@ -45,9 +45,7 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
         holder.itemBinding.noteTitle.text = currentNote.noteTitle
 
         holder.itemView.setOnClickListener {
-            val direction = HomeFragmentDirections
-                .actionHomeFragmentToEditNoteFragment(currentNote)
-            it.findNavController().navigate(direction)
+            listener.invoke(currentNote)
         }
     }
 

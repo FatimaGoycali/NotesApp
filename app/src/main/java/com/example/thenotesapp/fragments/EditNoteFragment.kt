@@ -36,6 +36,8 @@ class EditNoteFragment : Fragment(R.layout.fragment_edit_note), MenuProvider {
         savedInstanceState: Bundle?
     ): View? {
         editNoteBinding = FragmentEditNoteBinding.inflate(inflater, container, false)
+        (context as MainActivity).hideBackArrow(true)
+
         return binding.root
 
     }
@@ -45,6 +47,8 @@ class EditNoteFragment : Fragment(R.layout.fragment_edit_note), MenuProvider {
 
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+
 
         notesViewModel = (activity as MainActivity).noteViewModel
         currentNote = args.note!!
